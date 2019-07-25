@@ -6,7 +6,7 @@ $password = '';
 $dbname = 'betjournal';
 $charset = 'utf8';
 
-$title = $_POST['title'];
+/*$title = $_POST['title'];
 $description = $_POST['description'];
 $content = $_POST['content'];
 $update_date = $_POST['update_date'];
@@ -14,7 +14,7 @@ $update_date = date('Y-m-d H:i:s');
 $edit_date = $_POST['edit_date'];
 $edit_date = date('Y-m-d H:i:s');
 $views = $_POST['views'];
-$author_id = $_POST['author_id'];
+$author_id = $_POST['author_id'];*/
 
 try {
     $pdo = new PDO("$driver:host=$host; dbname=$dbname; charset=$charset", $user, $password);
@@ -47,7 +47,7 @@ function showTable($pdo)
             <td>{$news['Title']}</td>
             <td>{$news['Short_description']}</td>
             <td>{$news['Content']}</td>
-            <td>{$news['Update_date']}</td>
+            <td>{$news['Add_date']}</td>
             <td>{$news['Edit_date']}</td>
             <td>{$news['Views']}</td>
             <td>{$news['Author_ID']}</td>

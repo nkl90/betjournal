@@ -9,23 +9,21 @@ $charset = 'utf8';
 $id = $_GET['edit'];
 
 $editbtn = $_POST['saveNewsBtn'];
+
 $title = $_POST['title'];
 $description = $_POST['description'];
 $content = $_POST['content'];
-$update_date = $_POST['update_date'];
-$update_date = date('Y-m-d H:i:s');
-$edit_date = $_POST['edit_date'];
 $edit_date = date('Y-m-d H:i:s');
-$views = $_POST['views'];
 $author_id = $_POST['author_id'];
 
-try {
-    $pdo = new PDO("$driver:host=$host; dbname=$dbname; charset=$charset", $user, $password);
+$pdo = new PDO("$driver:host=$host; dbname=$dbname; charset=$charset", $user, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+try {
     $result = $pdo->prepare("SELECT * FROM `betjournal_news`WHERE ID=$id");
     $result->execute([
         'Title' => $title, 'Short_description' => $description, 'Content' => $content,
-        'Update_date' => $update_date, 'Edit_date' => $edit_date, 'Views' => $views, 'Author_ID' => $author_id
+        'Author_ID' => $author_id
     ]);
     $edit = $result->fetch(PDO::FETCH_OBJ);
 } catch (PDOException $e) {
@@ -35,8 +33,8 @@ try {
 if (
     isset($editbtn)
 ) {
-    $result = $pdo->query("UPDATE `betjournal_news` SET Title='$title', Short_description='$description', Content='$content', Update_date='$update_date',
-    Edit_date='$edit_date', Views='$views', Author_ID='$author_id' WHERE ID=$id");
+    $result = $pdo->query("UPDATE `betjournal_news` SET Title='$title', Short_description='$description', Content='$content',
+    Edit_date='$edit_date', Author_ID='$author_id' WHERE ID=$id");
     header("Location: list-news-bd.php");
 }
 
@@ -74,32 +72,26 @@ include('includes/navbar.php');
                         <td>
                             <h6>Содержимое</h6>
                         </td>
-                        <td><input value="<?= $edit->Content; ?>" type="text" class="form-control" id="basicInput" name="content"></td>
+                        <td><textarea class="form-control" id="descTextarea" rows="3" name="content" value="<?= $edit->Content; ?>"></textarea></td>
                     </tr>
                     <tr>
                         <td>
-                            <h6>Дата добавления</h6>
+                            <h6>Автор</h6>
                         </td>
-                        <td><input value="<?= $edit->Update_date; ?>" type="text" class="form-control" id="basicInput" name="update_date"></td>
-                    </tr>
-                    <tr>
                         <td>
-                            <h6>Дата редактирования</h6>
-                        </td>
-                        <td><input value="<?= $edit->Edit_date; ?>" type="text" class="form-control" id="basicInput" name="edit_date"></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <h6>Количество просмотров</h6>
-                        </td>
-                        <td><input value="<?= $edit->Views; ?> " type="text" class="form-control" id="basicInput" name="views"></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <h6>Автор ID</h6>
-                        </td>
-                        <td><input value="<?= $edit->Author_ID; ?>" type="text" class="form-control" id="basicInput" name="author_id"></td>
-                    </tr>
+                        <select class="custom-select" id="customSelect" name="author">
+                                <option>Выберите автора</option>
+                                <?php
+                                $author_result = $pdo->prepare("SELECT Author_name FROM `betjournal_author`");
+                                $author_result->execute();
+                                $author_results=$author_result->fetchAll();
+                                foreach ($author_results as $id => $author_name) :
+                                    echo "<option value=" . $id["ID"] . ">" . $author_name["Author_name"] . "</option>";
+                                endforeach;
+
+                                ?>
+                            </select>
+                        </tr>
                 </table>
                 <input type="submit" class="btn btn-success btn-min-width mr-1 mb-1" name="saveNewsBtn" value="Сохранить изменения">
             </form>

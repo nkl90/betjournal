@@ -1,6 +1,22 @@
 <?php
 include('includes/head.php');
 include('includes/navbar.php');
+$driver = 'mysql';
+$host = 'localhost';
+$user = 'root';
+$password = '';
+$dbname = 'betjournal';
+$charset = 'utf8';
+try {
+  $pdo = new PDO("$driver:host=$host; dbname=$dbname; charset=$charset", $user, $password);
+  $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+  $author_result = $pdo->prepare("SELECT Author_name FROM `betjournal_author`");
+  $author_result->execute();
+  $author_results = $author_result->fetchAll();
+} catch (PDOException $e) {
+  echo 'Ошибка: ' . $e->getMessage();
+}
 ?>
 
 <div class="main-menu-content">
@@ -27,7 +43,18 @@ include('includes/navbar.php');
         </div>
       </div>
       <a href="add-news.php"><button type="button" class="btn btn-success btn-min-width mr-1 mb-1" name="addNewsBtn">Добавить новость</button></a>
+      <select class="custom-select" id="customSelect" name="author">
+        <option>Выберите автора</option>
+        <?php
+        $author_result = $pdo->prepare("SELECT Author_name FROM `betjournal_author`");
+        $author_result->execute();
+        $author_results = $author_result->fetchAll();
+        foreach ($author_results as $id => $author_name) :
+          echo "<option value=" . $id["ID"] . ">" . $author_name["Author_name"] . "</option>";
+        endforeach;
 
+        ?>
+      </select>
       <?php
       include('includes/scripts.php');
       ?>
