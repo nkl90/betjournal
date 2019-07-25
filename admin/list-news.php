@@ -43,18 +43,6 @@ try {
         </div>
       </div>
       <a href="add-news.php"><button type="button" class="btn btn-success btn-min-width mr-1 mb-1" name="addNewsBtn">Добавить новость</button></a>
-      <select class="custom-select" id="customSelect" name="author">
-        <option>Выберите автора</option>
-        <?php
-        $author_result = $pdo->prepare("SELECT Author_name FROM `betjournal_author`");
-        $author_result->execute();
-        $author_results = $author_result->fetchAll();
-        foreach ($author_results as $id => $author_name) :
-          echo "<option value=" . $id["ID"] . ">" . $author_name["Author_name"] . "</option>";
-        endforeach;
-
-        ?>
-      </select>
       <?php
       include('includes/scripts.php');
       ?>
