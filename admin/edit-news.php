@@ -1,10 +1,5 @@
 <?php
-$driver = 'mysql';
-$host = 'localhost';
-$user = 'root';
-$password = '';
-$dbname = 'betjournal';
-$charset = 'utf8';
+include('params-local.php');
 
 $id = $_GET['edit'];
 
@@ -34,7 +29,7 @@ if (
     isset($editbtn)
 ) {
     $result = $pdo->query("UPDATE `betjournal_news` SET Title='$title', Short_description='$description', Content='$content',
-    Edit_date='$edit_date', Author_ID='$author_id' WHERE ID=$id");
+    Edit_date='$edit_date', Author_ID=$author_id WHERE ID=$id");
     header("Location: list-news-bd.php");
 }
 

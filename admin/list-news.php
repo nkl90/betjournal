@@ -1,12 +1,7 @@
 <?php
 include('includes/head.php');
 include('includes/navbar.php');
-$driver = 'mysql';
-$host = 'localhost';
-$user = 'root';
-$password = '';
-$dbname = 'betjournal';
-$charset = 'utf8';
+include('params-local.php');
 try {
   $pdo = new PDO("$driver:host=$host; dbname=$dbname; charset=$charset", $user, $password);
   $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
