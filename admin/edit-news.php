@@ -1,10 +1,5 @@
 <?php
-$driver = 'mysql';
-$host = 'localhost';
-$user = 'root';
-$password = '';
-$dbname = 'betjournal';
-$charset = 'utf8';
+include('params-local.php');
 
 $id = $_GET['edit'];
 
@@ -17,7 +12,7 @@ $edit_date = date('Y-m-d H:i:s');
 $author_id = $_POST['author_id'];
 
 $pdo = new PDO("$driver:host=$host; dbname=$dbname; charset=$charset", $user, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 try {
     $result = $pdo->prepare("SELECT * FROM `betjournal_news`WHERE ID=$id");
@@ -33,8 +28,18 @@ try {
 if (
     isset($editbtn)
 ) {
-    $result = $pdo->query("UPDATE `betjournal_news` SET Title='$title', Short_description='$description', Content='$content',
-    Edit_date='$edit_date', Author_ID='$author_id' WHERE ID=$id");
+    //сразу видно, по PDO ничего не читала, либо ничего не поняла
+    $sth = $pdo->prepare("UPDATE `betjournal_news` SET Title=:title, Short_description=:description, Content=:content,
+    Edit_date=:edit_date, Author_ID=:author_id WHERE `ID`=:id");
+
+    $sth->bindParam(':title', $title);
+    $sth->bindParam(':description', $description);
+    $sth->bindParam(':content', $content);
+    $sth->bindParam(':edit_date', $edit_date);
+    $sth->bindParam(':author_id', $author_id);
+    $sth->bindParam(':id', $id);
+    $sth->execute();
+
     header("Location: list-news-bd.php");
 }
 
@@ -46,6 +51,8 @@ include('includes/navbar.php');
     <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
         <li class="active"><a href="list-news-bd.php"><i class="ft-home"></i><span class="menu-title" data-i18n="">Новости</span></a>
         </li>
+        <li class="active"><a href="list-news-author.php"><i class="ft-home"></i><span class="menu-title" data-i18n="">Авторы</span></a>
+        </li>
     </ul>
 </div>
 </div>
@@ -55,47 +62,56 @@ include('includes/navbar.php');
         </div>
         <div class="content-body">
             <form method="POST">
-                <table border="0">
+                <table>
                     <tr>
                         <td>
-                            <h6>Заголовок</h6>
+                            <h6>Заголовок:</h6>
                         </td>
-                        <td><input value="<?= $edit->Title; ?>" type="text" class="form-control" id="basicInput" name="title"></td>
+                    </tr>
+                    <tr>
+                        <td><input value="<?= $edit->Title; ?>" type="text" class="form-control title_author_width" id="basicInput" name="title"></td>
                     </tr>
                     <tr>
                         <td>
-                            <h6>Краткое описание</h6>
+                            <h6>Краткое описание:</h6>
                         </td>
-                        <td><input value="<?= $edit->Short_description; ?> " type="text" class="form-control" id="basicInput" name="description"></td>
+                        <td>
+                            <h6>Содержимое:</h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><textarea class="form-control desc_cont_width" id="descTextarea" rows="3" name="description"><?= $edit->Short_description; ?></textarea></td>
+                        <td><textarea class="form-control desc_cont_width" id="descTextarea" rows="3" name="content"><?= $edit->Content; ?></textarea></td>
                     </tr>
                     <tr>
                         <td>
-                            <h6>Содержимое</h6>
+                            <h6>Автор:</h6>
                         </td>
-                        <td><textarea class="form-control" id="descTextarea" rows="3" name="content" value="<?= $edit->Content; ?>"></textarea></td>
                     </tr>
                     <tr>
-                        <td>
-                            <h6>Автор</h6>
-                        </td>
-                        <td>
-                        <select class="custom-select" id="customSelect" name="author">
+                        <td><select class="custom-select title_author_width" id="customSelect" name="author_id">
                                 <option>Выберите автора</option>
                                 <?php
-                                $author_result = $pdo->prepare("SELECT Author_name FROM `betjournal_author`");
+                                $author_result = $pdo->prepare("SELECT * FROM `betjournal_author`");
                                 $author_result->execute();
-                                $author_results=$author_result->fetchAll();
-                                foreach ($author_results as $id => $author_name) :
-                                    echo "<option value=" . $id["ID"] . ">" . $author_name["Author_name"] . "</option>";
+                                $author_results = $author_result->fetchAll();
+                                foreach ($author_results as $key => $row) :
+                                    ?>
+                                    <option <?= ($edit->Author_ID == $row['ID']) ? 'selected' : '' ?> value="<?= $row['ID'] ?>">
+                                        <?= $row["Author_name"] ?>
+                                    </option>
+                                <?php
                                 endforeach;
-
                                 ?>
-                            </select>
-                        </tr>
+                            </select></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><input type="submit" class="btn btn-success btn-min-width mr-1 mb-1 btntop" name="saveNewsBtn" value="Сохранить изменения"></td>
+                        <td></td>
+                    </tr>
                 </table>
-                <input type="submit" class="btn btn-success btn-min-width mr-1 mb-1" name="saveNewsBtn" value="Сохранить изменения">
-            </form>
 
+            </form>
             <?php
             include('includes/scripts.php');
             ?>
