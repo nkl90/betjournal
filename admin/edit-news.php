@@ -1,10 +1,5 @@
 <?php
-$driver = 'mysql';
-$host = 'localhost';
-$user = 'root';
-$password = '';
-$dbname = 'betjournal';
-$charset = 'utf8';
+include('params-local.php');
 
 $id = $_GET['edit'];
 
@@ -33,8 +28,18 @@ try {
 if (
     isset($editbtn)
 ) {
-    $result = $pdo->query("UPDATE `betjournal_news` SET Title='$title', Short_description='$description', Content='$content',
-    Edit_date='$edit_date', Author_ID='$author_id' WHERE ID=$id");
+    //сразу видно, по PDO ничего не читала, либо ничего не поняла
+    $sth = $pdo->prepare("UPDATE `betjournal_news` SET Title=:title, Short_description=:description, Content=:content,
+    Edit_date=:edit_date, Author_ID=:author_id WHERE `ID`=:id");
+    
+    $sth->bindParam(':title', $title);
+    $sth->bindParam(':description', $description);
+    $sth->bindParam(':content', $content);
+    $sth->bindParam(':edit_date', $edit_date);
+    $sth->bindParam(':author_id', $author_id);
+    $sth->bindParam(':id', $id);
+    $sth->execute();
+
     header("Location: list-news-bd.php");
 }
 

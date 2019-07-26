@@ -1,10 +1,5 @@
 <?php
-$driver = 'mysql';
-$host = 'localhost';
-$user = 'root';
-$password = '';
-$dbname = 'betjournal';
-$charset = 'utf8';
+include('params-local.php');
 
 /*$title = $_POST['title'];
 $description = $_POST['description'];
