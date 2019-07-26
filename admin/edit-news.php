@@ -77,21 +77,25 @@ include('includes/navbar.php');
                         <td>
                             <h6>Содержимое</h6>
                         </td>
-                        <td><textarea class="form-control" id="descTextarea" rows="3" name="content" value="<?= $edit->Content; ?>"></textarea></td>
+                        <td><textarea class="form-control" id="descTextarea" rows="3" name="content"><?= $edit->Content; ?></textarea></td>
                     </tr>
                     <tr>
                         <td>
                             <h6>Автор</h6>
                         </td>
                         <td>
-                        <select class="custom-select" id="customSelect" name="author">
+                        <select class="custom-select" id="customSelect" name="author_id">
                                 <option>Выберите автора</option>
                                 <?php
-                                $author_result = $pdo->prepare("SELECT Author_name FROM `betjournal_author`");
+                                $author_result = $pdo->prepare("SELECT * FROM `betjournal_author`");
                                 $author_result->execute();
                                 $author_results=$author_result->fetchAll();
-                                foreach ($author_results as $id => $author_name) :
-                                    echo "<option value=" . $id["ID"] . ">" . $author_name["Author_name"] . "</option>";
+                                foreach ($author_results as $key => $row) :
+                                    ?>
+                                    <option <?=($edit->Author_ID == $row['ID']) ? 'selected' : ''?> value="<?=$row['ID']?>">
+                                        <?=$row["Author_name"]?>        
+                                    </option>
+                                    <?php
                                 endforeach;
 
                                 ?>
