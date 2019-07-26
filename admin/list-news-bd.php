@@ -1,18 +1,5 @@
 <?php
 include('params-local.php');
-<<<<<<< HEAD
-=======
-
-/*$title = $_POST['title'];
-$description = $_POST['description'];
-$content = $_POST['content'];
-$update_date = $_POST['update_date'];
-$update_date = date('Y-m-d H:i:s');
-$edit_date = $_POST['edit_date'];
-$edit_date = date('Y-m-d H:i:s');
-$views = $_POST['views'];
-$author_id = $_POST['author_id'];*/
->>>>>>> 39935a7711b2f782077a8e40b7c7a354f5962cd7
 
 try {
     $pdo = new PDO("$driver:host=$host; dbname=$dbname; charset=$charset", $user, $password);

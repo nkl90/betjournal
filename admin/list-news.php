@@ -14,15 +14,6 @@ try {
 }
 ?>
 
-<div class="main-menu-content">
-  <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
-    <li class="active"><a href="list-news-bd.php"><i class="ft-home"></i><span class="menu-title" data-i18n="">Новости</span></a>
-    </li>
-    <li class="active"><a href="list-news-author.php"><i class="ft-home"></i><span class="menu-title" data-i18n="">Авторы</span></a>
-    </li>
-  </ul>
-</div>
-</div>
 <div class="app-content content">
   <div class="content-wrapper">
     <div class="content-header row">

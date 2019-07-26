@@ -60,3 +60,13 @@
       <li class="nav-item d-md-none"><a class="nav-link close-navbar"><i class="ft-x"></i></a></li>
     </ul>
   </div>
+
+<div class="main-menu-content">
+  <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
+    <li class="active"><a href="list-news-bd.php"><i class="la la-newspaper-o"></i><span class="menu-title" data-i18n="">Новости</span></a>
+    </li>
+    <li class="active"><a href="list-news-author.php"><i class="la la-users"></i><span class="menu-title" data-i18n="">Авторы</span></a>
+    </li>
+  </ul>
+</div>
+</div>

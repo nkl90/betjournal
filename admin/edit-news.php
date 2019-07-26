@@ -28,14 +28,10 @@ try {
 if (
     isset($editbtn)
 ) {
-
+    //сразу видно, по PDO ничего не читала, либо ничего не поняла
     $sth = $pdo->prepare("UPDATE `betjournal_news` SET Title=:title, Short_description=:description, Content=:content,
     Edit_date=:edit_date, Author_ID=:author_id WHERE `ID`=:id");
-<<<<<<< HEAD
 
-=======
-
->>>>>>> 39935a7711b2f782077a8e40b7c7a354f5962cd7
     $sth->bindParam(':title', $title);
     $sth->bindParam(':description', $description);
     $sth->bindParam(':content', $content);
@@ -51,15 +47,6 @@ include('includes/head.php');
 include('includes/navbar.php');
 ?>
 
-<div class="main-menu-content">
-    <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
-        <li class="active"><a href="list-news-bd.php"><i class="ft-home"></i><span class="menu-title" data-i18n="">Новости</span></a>
-        </li>
-        <li class="active"><a href="list-news-author.php"><i class="ft-home"></i><span class="menu-title" data-i18n="">Авторы</span></a>
-        </li>
-    </ul>
-</div>
-</div>
 <div class="app-content content">
     <div class="content-wrapper">
         <div class="content-header row">
@@ -82,32 +69,22 @@ include('includes/navbar.php');
                         <td>
                             <h6>Содержимое:</h6>
                         </td>
-<<<<<<< HEAD
                     </tr>
                     <tr>
                         <td><textarea class="form-control desc_cont_width" id="descTextarea" rows="3" name="description"><?= $edit->Short_description; ?></textarea></td>
                         <td><textarea class="form-control desc_cont_width" id="descTextarea" rows="3" name="content"><?= $edit->Content; ?></textarea></td>
-=======
-                        <td><textarea class="form-control" id="descTextarea" rows="3" name="content"><?= $edit->Content; ?></textarea></td>
->>>>>>> 39935a7711b2f782077a8e40b7c7a354f5962cd7
                     </tr>
                     <tr>
                         <td>
                             <h6>Автор:</h6>
                         </td>
-<<<<<<< HEAD
                     </tr>
                     <tr>
-                        <td><select class="custom-select title_author_width" id="customSelect" name="author_id">
-=======
-                        <td>
-                        <select class="custom-select" id="customSelect" name="author_id">
->>>>>>> 39935a7711b2f782077a8e40b7c7a354f5962cd7
+                        <td><select class="custom-select" id="customSelect" name="author_id">
                                 <option>Выберите автора</option>
                                 <?php
                                 $author_result = $pdo->prepare("SELECT * FROM `betjournal_author`");
                                 $author_result->execute();
-<<<<<<< HEAD
                                 $author_results = $author_result->fetchAll();
                                 foreach ($author_results as $key => $row) :
                                     ?>
@@ -115,15 +92,6 @@ include('includes/navbar.php');
                                         <?= $row["Author_name"] ?>
                                     </option>
                                 <?php
-=======
-                                $author_results=$author_result->fetchAll();
-                                foreach ($author_results as $key => $row) :
-                                    ?>
-                                    <option <?=($edit->Author_ID == $row['ID']) ? 'selected' : ''?> value="<?=$row['ID']?>">
-                                        <?=$row["Author_name"]?>
-                                    </option>
-                                    <?php
->>>>>>> 39935a7711b2f782077a8e40b7c7a354f5962cd7
                                 endforeach;
                                 ?>
                             </select></td>
@@ -133,8 +101,8 @@ include('includes/navbar.php');
                         <td></td>
                     </tr>
                 </table>
-
             </form>
+
             <?php
             include('includes/scripts.php');
             ?>
